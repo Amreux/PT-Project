@@ -129,6 +129,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="Action.cpp" />
+    <ClCompile Include="ActionCopyCard.cpp" />
     <ClCompile Include="AddCardAction.cpp" />
     <ClCompile Include="AddLadderAction.cpp" />
     <ClCompile Include="ApplicationManager.cpp" />
@@ -183,6 +184,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Action.h" />
+    <ClInclude Include="ActionCopyCard.h" />
     <ClInclude Include="AddCardAction.h" />
     <ClInclude Include="AddLadderAction.h" />
     <ClInclude Include="ApplicationManager.h" />
