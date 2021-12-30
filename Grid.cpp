@@ -5,6 +5,7 @@
 #include "Ladder.h"
 #include "Card.h"
 #include "Player.h"
+#include "Snake.h"
 
 Grid::Grid(Input * pIn, Output * pOut) : pIn(pIn), pOut(pOut) // Initializing pIn, pOut
 {
@@ -46,8 +47,34 @@ bool Grid::AddObjectToCell(GameObject * pNewObject)  // think if any validation 
 	{
 		// Get the previous GameObject of the Cell
 		GameObject * pPrevObject = CellList[pos.VCell()][pos.HCell()]->GetGameObject();
-		if( pPrevObject)  // the cell already contains a game object
+		
+		if (pPrevObject)  // the cell already contains a game object
+		{
 			return false; // do NOT add and return false
+		}
+		Ladder* pLad = dynamic_cast<Ladder*>(pNewObject);
+		Snake* pSna = dynamic_cast<Snake*>(pNewObject);
+		for (int i = 0; i < 9; i++) {
+			if (Ladder* Lad = CellList[i][pos.HCell()]->HasLadder()) {
+				if (Lad->GetEndPosition().VCell() == pos.VCell()) {
+					return false;
+				}
+				if (pSna) {
+					if (pSna->GetEndPosition().VCell() == Lad->GetPosition().VCell())
+						return false;
+				}
+
+			}
+			else if (Snake* Sna = CellList[i][pos.HCell()]->HasSnake()) {
+				if (Sna->GetEndPosition().VCell() == pos.VCell()) {
+					return false;
+				}
+				if (pLad) {
+					if (pLad->GetEndPosition().VCell() == Sna->GetPosition().VCell())
+						return false;
+				}
+			}
+		}
 
 		// Set the game object of the Cell with the new game object
 		CellList[pos.VCell()][pos.HCell()]->SetGameObject(pNewObject);
@@ -83,7 +110,9 @@ void Grid::UpdatePlayerCell(Player * player, const CellPosition & newPosition)
 
 
 // ========= Setters and Getters Functions =========
-
+GameObject* Grid::GetGameObjectOfCell(CellPosition pos) {
+	return CellList[pos.VCell()][pos.HCell()]->GetGameObject();
+}
 
 Input * Grid::GetInput() const
 {
@@ -140,7 +169,9 @@ Ladder * Grid::GetNextLadder(const CellPosition & position)
 
 
 			///TODO: Check if CellList[i][j] has a ladder, if yes return it
-			
+			if (CellList[i][j]->HasLadder()) {
+				return CellList[i][j]->HasLadder();
+			}
 
 		}
 		startH = 0; // because in the next above rows, we will search from the first left cell (hCell = 0) to the right

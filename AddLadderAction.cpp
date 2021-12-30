@@ -28,11 +28,19 @@ void AddLadderAction::ReadActionParameters()
 	pOut->PrintMessage("New Ladder: Click on its End Cell ...");
 	endPos = pIn->GetCellClicked();
 
-    
+ 
 
 	///TODO: Make the needed validations on the read parameters
-
-	
+	bool Con1 = endPos.HCell() == startPos.HCell();
+	bool Con2 = endPos.VCell() < startPos.VCell();
+	if (!Con1 || !Con2) {
+		pOut->PrintMessage("Invalid Positioning, Try Again");
+		pIn->GetCellClicked();
+		pOut->PrintMessage("New Ladder: Click on its Start Cell ...");
+		startPos = pIn->GetCellClicked();
+		pOut->PrintMessage("New Ladder: Click on its End Cell ...");
+		endPos = pIn->GetCellClicked();
+	}
 
 	// Clear messages
 	pOut->ClearStatusBar();
